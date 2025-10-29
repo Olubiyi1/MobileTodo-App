@@ -1,6 +1,6 @@
 
 import {useState} from "react";
-import { View, Text, StyleSheet,TextInput, Button} from "react-native";
+import { View, StyleSheet,TextInput, Button} from "react-native";
 
 type Submit={
     submitHandler: (title:string) => void

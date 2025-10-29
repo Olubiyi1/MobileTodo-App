@@ -1,4 +1,4 @@
-import { FlatList, Text, View } from "react-native";
+import { FlatList, View, Text, Alert, TouchableWithoutFeedback,Keyboard } from "react-native";
 import Header from "./components/header";
 import { Todo } from "../constants/todo";
 import TodoItems from "./components/Todos";
@@ -15,24 +15,30 @@ export default function Index() {
   };
 
   const submitHandler = (title: string) => {
-    if (title.trim().length > 0) {
+    if (title.trim().length > 3) {
       setTodo((prevTodo) => {
-        return [{ title: title, id: Math.random()}, ...prevTodo];
+        return [{ title: title, id: Math.random() }, ...prevTodo];
       });
-    }
+    } else
+      Alert.alert("OOPs", "Input should be more than 3 letters", [
+        { text: "Try again" },
+      ]);
   };
 
   return (
-    <View>
-      <Header />
-      <AddTodo submitHandler={submitHandler} />
-      <FlatList
-        data={todo}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => {
-          return <TodoItems item={item} onPress={handlePress} />;
-        }}
-      />
-    </View>
+    <TouchableWithoutFeedback onPress={()=>{Keyboard.dismiss()}}>
+      <View style={{flex:1}}>
+        <Header />
+        <AddTodo submitHandler={submitHandler} />
+        <FlatList 
+          data={todo}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => {
+            return <TodoItems item={item} onPress={handlePress} />;
+          }}
+          ListEmptyComponent={<Text>No todos yet</Text>}
+        />
+      </View> 
+    </TouchableWithoutFeedback>
   );
 }
